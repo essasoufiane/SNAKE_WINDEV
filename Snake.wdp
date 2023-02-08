@@ -23,6 +23,9 @@ project :
      internal_generation_version : 3
     icon_filename : .\snake-32.ico
     language : 1
+    new_features_help :
+     name : ""
+     internal_properties : BwAAAAcAAAAsSNQcoXy/6GBB085xWglq3tg7nnW4KS5I4k1Qmv9SpI1U1wNqDaeB5NCJ1mIXaPNSmnQHCaavpetF
  elements :
   identifier : 0x43db9b3700058578
   elements :
