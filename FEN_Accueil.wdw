@@ -1,0 +1,402 @@
+#To edit and compare internal_properties, use WINDEV integrated tools.
+#Internal properties refer to the properties of controls in windows, reports, etc.
+info :
+ name : FEN_Accueil
+ major_version : 27
+ minor_version : 0
+ type : 2
+ description : ""
+ subtype : 0
+window :
+ name : FEN_Accueil
+ identifier : 0x23db9b64014e3446
+ internal_properties : BwAAAAcAAACLMDJMwEl8KleBiNDZ12MnPpkmE8G8d+brcDYPbal/VLL6KKRKRywo6PtdCz4PpSBhUr0Jq9NLXsL4+8oTAMyfSbIohRdq0AWDDI4bkDa2wROPHQlftq1Z1hKcVPY/nqfeg1gMbJ62Lii3cANGdDvwJYfE3HecNnP3fEL2xggYYJiXBNe4r3pqapjM1S8y5l65XJqN8x2bMTbWtXSrpxWR+LmyDIskvlRCdnfCrAO4+zV7KtAsc6KMxgbbFA2OF3rS9AfKmix7rTjmNU7oobiP45twpB81axg6/wya1IRry4xw526MKhX6BoqSJwgIC2hJvjvb3FHSB+fb5m/KzAfI+nsAeri8NRBG8zfmiRfAHQEfH6TTcvXTwR4J8tdD1++a3I2Crj2GXW7Ch6ouL0dZnj1LtdZot244Avw8zgsfQ4oas1ZS4l3MmbTkG9n5Wc6tY7Uepyt6woAOWusa6lKK+AooldUG2XfhygHcJBz7IaGSBdbyxPOLuA5yu8bfWj3YJZaOAmIRBW29lfpszxhEL5xxtOikrDocqWvlBuyuacSNVM1rm2m+5+Qpil+Bu6LpXOKVtGRpJ9lOhiS4T5nbJbYXDSfpuzMt7ZW6VGvAZlNIZzg2MXdGeRI00XyM1FTFVzu6qoa1L6APR/OJkcp+AqGGcQ==
+ properties :
+  width : 1200
+  height : 800
+  widthClient : 1198
+  heightClient : 798
+ controls :
+  -
+    name : HTM_SansNom1
+    identifier : 0x23db9b800171a456
+    internal_properties : BwAAAAcAAABK63MkbYzO1tfYfs8rykKyaerNVmwCPd2QXceKbJ9+IGtMJlsJ7zNHQIdWngu3pOyYwYREHL0mT98pAByCYJNnHDWXYllvoOdIGkQh/WcMGIwBSDk3YSEAOTDsTJS35UkLC6z/jxq3tSAmzJpFKUeqBvRxHbA96jajE67yqAHRsO0IcyDTyrovDOugWRZyuEDX6tYGltG0NWTtsbF2ADn1NinLngbAEsLw2prIWapYxEEQPrJqWh6RRzIy02LsKRrCytRV7wiSwgVI+Ik1zI4h17WWBQjxymzquKBbkXiFGwudqANMHqDEjDh6jUmZ5NBVENcpWnUD9FhavFfJkyAfDCoDqT+auMf18ElhDAl8S8e0sborhP2NorpRYO3aSoshC9pBJ0orG297q5N1s/9uQRdqvHAGYTUaLP49AjbcVgneRvcr0X4AKFU/dNv5TyWLXeTQ3WSU0w+qUCDZ/g==
+    properties :
+     x : 45
+     y : 26
+     width : 1108
+     height : 771
+    type : 23
+    code_elements :
+     type_code : 36
+     p_codes :
+      -
+        code : |1+
+         s est chaîne = [
+          <!DOCTYPE html>
+         <html>
+         
+         
+         
+         <head>
+         	<title>Le Jeu du Serpent</title>
+         	
+         	<script>
+         	window.onload = function(){
+           const canvasWidth = 900;
+           const canvasHeight = 600;
+           const blockSize = 30; // en pixels
+           const canvas = document.createElement("canvas");
+           const ctx = canvas.getContext('2d');
+           const widthInBlocks = canvasWidth/blockSize; 
+           const heightInBlocks = canvasHeight/blockSize;
+           const centreX = canvasWidth / 2;
+           const centreY = canvasHeight / 2;
+           let delay; // en millisecondes
+           let snakee;
+           let applee;
+           let score;
+           let timeout;
+         
+           init();
+         
+           function init(){
+             canvas.width = canvasWidth;
+             canvas.height = canvasHeight;
+             canvas.style.border = "30px solid gray";
+             canvas.style.margin = "50px auto";
+             canvas.style.display = "block";
+             canvas.style.backgroundColor = "#ddd";
+             document.body.appendChild(canvas);
+             launch();
+           }
+         
+           function launch(){
+             snakee = new Snake([[6,4],[5,4],[4,4],[3,4],[2,4]], "right");
+             applee = new Apple([10, 10]);
+             score = 0;
+             clearTimeout(timeout);
+             delay = 100;
+             refreshCanvas();
+           }
+         
+           function refreshCanvas(){
+             snakee.advance();
+             if(snakee.checkCollision()){
+               gameOver();
+             } else {
+               if(snakee.isEatingApple(applee)) {
+                 score++;
+                 snakee.ateApple = true;
+                 do {
+                   applee.setNewPosition();
+                 } while(applee.isOnSnake(snakee))
+                   if(score % 5 == 0){
+                     speedUp();
+                   }
+               }
+               ctx.clearRect(0,0,canvasWidth, canvasHeight);
+               drawScore();
+               snakee.draw();
+               applee.draw();
+               timeout = setTimeout(refreshCanvas, delay);
+             }
+           }
+         
+           function gameOver(){
+             ctx.save();
+             ctx.font = "bold 70px sans-serif";
+             ctx.fillStyle = "black";
+             ctx.textAlign = "center";
+             ctx.textBaseline = "middle";
+             ctx.strokeStyle = "white";
+             ctx.lineWidth = "5";
+             ctx.strokeText("Game Over", centreX, centreY - 180);
+             ctx.fillText("Game Over", centreX, centreY - 180);
+             ctx.font = "bold 30px sans-serif";
+             ctx.strokeText("Appuyer sur la touche espace pour rejouer", centreX, centreY - 120);
+             ctx.fillText("Appuyer sur la touche espace pour rejouer", centreX, centreY - 120);
+             ctx.restore();
+           }
+         
+           function drawScore(){
+             ctx.save();
+             ctx.font = "bold 200px sans-serif";
+             ctx.fillStyle = "gray";
+             ctx.textAlign = "center";
+             ctx.textBaseline = "middle";
+             ctx.fillText(score.toString(), centreX, centreY);
+             ctx.restore();
+           }
+         
+           function speedUp(){
+             delay /= 1.1;
+           }
+         
+           //Fonction de dessin d'un block du serpent
+           function drawBlock(ctx, position){
+             const x = position[0] * blockSize;
+             const y = position[1] * blockSize;
+             ctx.fillRect(x, y, blockSize, blockSize);
+           }
+         
+           //Fonction constructrice du serpent
+           function Snake(body, direction){
+             this.body = body;
+             this.direction = direction;
+             this.ateApple = false;
+             this.draw = function(){
+               ctx.save();
+               ctx.fillStyle = "#ff0000";
+               for(let i = 0; i < this.body.length;i++){
+                 drawBlock(ctx, this.body[i]);
+               }
+               ctx.restore();
+             };
+             this.advance = function(){
+               const nextPosition = this.body[0].slice();
+               switch(this.direction){
+                 case "left":
+                   nextPosition[0] -= 1;
+                   break;
+                 case "right":
+                   nextPosition[0] += 1;
+                   break;
+                 case "down":
+                   nextPosition[1] += 1;
+                   break;
+                 case "up":
+                   nextPosition[1] -= 1;
+                   break;
+                 default:
+                   throw("Invalid direction");
+               }
+               this.body.unshift(nextPosition);
+               if(!this.ateApple)
+                 this.body.pop();
+               else
+                 this.ateApple = false;
+             };
+             
+             this.setDirection = function(newDirection){
+               let allowedDirections;
+               switch(this.direction){
+                 case "left":
+                 case "right":
+                   allowedDirections = ["up", "down"];
+                   break;
+                 case "down":
+                 case "up":
+                   allowedDirections = ["left", "right"];
+                   break;
+                 default:
+                   throw("Invalid direction");
+               }
+               if(allowedDirections.indexOf(newDirection) > -1){
+                 this.direction = newDirection;
+               }
+             };
+             this.checkCollision = function(){
+               let wallCollision = false;
+               let snakeCollision = false;
+               const head = this.body[0];
+               const rest = this.body.slice(1);
+               const snakeX = head[0];
+               const snakeY = head[1];
+               const minX = 0;
+               const minY = 0;
+               const maxX = widthInBlocks-1;
+               const maxY = heightInBlocks-1;
+               const isNotBetweenHorizontalWalls = snakeX < minX || snakeX > maxX;
+               const isNotBetweenVerticalWalls = snakeY < minY || snakeY > maxY;
+               if(isNotBetweenHorizontalWalls || isNotBetweenVerticalWalls){
+                 wallCollision = true;
+               }
+               for(let i = 0;i < rest.length;i++){
+                 if(snakeX == rest[i][0] && snakeY == rest[i][1]){
+                   snakeCollision = true;
+                 }
+               }
+               return wallCollision || snakeCollision;
+             };
+             this.isEatingApple = function(appleToEat){
+               const head = this.body[0];
+               if(head[0] === appleToEat.position[0] && head[1] === appleToEat.position[1])
+                 return true;
+               else
+                 return false;
+             };
+           }
+         
+           //Fonction constructrice de la pomme
+           function Apple(position){
+             this.position = position;
+             this.draw = function(){
+               const radius = blockSize / 2;
+               const x = this.position[0] * blockSize + radius;
+               const y = this.position[1] * blockSize + radius;
+               ctx.save();
+               ctx.fillStyle = "#33cc33";
+               ctx.beginPath();
+               ctx.arc(x,y, radius, 0, Math.PI*2, true);
+               ctx.fill();
+               ctx.restore();
+             };
+             this.setNewPosition = function(){
+               const newX = Math.round(Math.random() * (widthInBlocks - 1));
+               const newY = Math.round(Math.random() * (heightInBlocks - 1));
+               this.position = [newX,newY];
+             };
+             this.isOnSnake = function(snakeToCheck){
+               let isOnSnake = false;
+               for(let i = 0;i < snakeToCheck.body.length;i++){
+                 if(this.position[0] === snakeToCheck.body[i][0] && this.position[1] === snakeToCheck.body[i][1]){
+                   isOnSnake = true;
+                 }
+               }
+               return isOnSnake;
+             };
+           }
+         
+         
+           //Gestion des touches du clavier
+           /*
+           document.onkeydown = function handleKeyDown(e){
+             const key = e.keyCode;
+             let newDirection;
+             switch(key){
+               case 37:
+                 newDirection = "left";
+                 break;
+               case 38:
+                 newDirection = "up";
+                 break;
+               case 39:
+                 newDirection = "right";
+                 break;
+               case 40:
+                 newDirection = "down";
+                 break;
+               case 32:
+                 restart();
+                 return;
+               default:
+                 return;
+             }
+             snakee.setDirection(newDirection);
+           }
+           */
+         
+         
+           const map = {}; // You could also use an array
+           onkeydown = onkeyup = function(e){
+             e = e || event; // to deal with IE
+             map[e.keyCode] = e.type == 'keydown';
+             let newDirection;
+             console.log(map);
+             if(map[37]){
+               newDirection = "left";
+             } else if(map[38]){
+               newDirection = "up";
+             } else if(map[39]){
+               newDirection = "right";
+             } else if(map[40]){
+               newDirection = "down";
+             } else if(map[32]){
+               launch();
+             }
+             snakee.setDirection(newDirection);
+           }
+         
+           window.addEventListener('keydown', onkeyup);
+         window.addEventListener('keyup', onkeydown);
+         }
+         	</script>
+         	
+         </head>
+         <body>
+         
+         </body>
+         </html>
+         ]
+         HTM_SansNom1 = s
+        type : 14
+      -
+        code : |1+
+         PROCÉDURE ClicLien(sUrl est chaine, bDansNouvelleFenetre est un booléen, sDestination est une chaine)
+         
+         RENVOYER Vrai
+        type : 266
+      -
+        code : |1+
+         PROCEDURE ChangePage( sUrl est chaine, sDestination est une chaine )
+         
+         RENVOYER Vrai
+        type : 290
+      -
+        code : |1+
+         PROCEDURE ChargementRessources( sUrl est chaine, nType est entier )
+         // nType donne le type de ressource à télécharger
+         // exemple : typehtmlResImage, typehtmlResScript, typehtmlResCss, typehtmlResXMLHttpRequest, typehtmlAutre
+         // ATTENTION : ce traitement est appelé depuis un thread secondaire
+         
+         RENVOYER Vrai
+        type : 289
+      -
+        code : |1+
+         PROCEDURE ClicDroitLien( sUrl est chaine )
+        type : 291
+  -
+    name : BTN_QUITTER
+    identifier : 0x23db9d30020738d8
+    internal_properties : BwAAAAcAAAB/neKkkR1OvTOG2Qh0PWoFBGX0B+B3lgIQbCGhh/lBVLTvnqufD4hJvkM9luW2WM9dIoPk5G1cQOOpo/dFLNLmhrxyDdrqpGkzwIa8lWjd/3i2L0lnLx20PyLthahmQEv/DcR1hJtxQv92R2rX6pUaKstxEqu+vmXC9QD2nonAgZvy/1LPjodwmEjQ0JALvQKtsydEdLkTjk86Yug0t6rNfrovP1Y8czjBnnOta5f8lL5eFEPtc2+ANPIcGU1WK5d3nyKQUI9VRcQt03E38ReF0ARDn0upr41z3JvVhgud69m3OMBkWIa3xHpM41otG4F1njNkEmr6XgM5lCLzQFtREi+h2p2Fpvj3SJXJRG6Os0h7sY5MvoV+sFgXuB3pwUU4bh5YgAeiks9o1fyFgwowiLwYPp963uPOWscZgazOskwd9J3PlItDw32uMeu0pEmY26RNHAQkbwEy1cFsaScJWg+XmTK8ivN1hpCvdzftsl2OgO1m9bnC+HYZoyADOqWnc0ngLkt0Bw12OSet/wfNn79a2JViz0wU1K1BoJ/vMt/52A8r/kBuRkkn9xw5K/Uxpsc9BLxO2FiWgV5SuAbxEY25KFGokbrdtUeCOwGxukil1R3OxQ+Wcegbf2BMz8UU2ajIOip/KPRY1L8dLbeqVhFmk2Ya6TA2idf/JI0RDWC7sbtbg51o0KqdgvzWNhaV6bxsojuChiTiBpEA0o6w4LutXgEavBFXBo9dVEGM/NSbzd8SkgloKOzcVMIMHUSQ2jt6LmvCYC2ndo+9/n9XMkxJk6OrAmqJ5Mm5DTrmwlPTWP4CN2wt7Yi4e/V8yKkFn/8BQwAeP5kl4lg9BoPmC4Lsf5XTTFnfLj6lS3gKv7kQZnjIexXBJGtoLIf9DBg+7E6EAlVmA5pxXd6OL1U61c212nlpBivyba+ThmGeaph3SfxITAcUFDFm+JOL6UT/7IVLcMIS23k7eXhuj9z5wzdR4p0Dchw8xk5RkfzR0Bt6PHHtJEQe4erFWoC2AEqMOqwsc2JFSFHQ8h6x1jOcZF+H9vkziZeI+AVFwX5bn5h77YzR5dFDbmTcLCVYSvrAkt+223VDbTETi1yo38K8eWUr3QKMBYImHHf663/bkSgdVRcfGXD1
+    properties :
+     x : 1107
+     y : 7
+     width : 80
+     height : 26
+    type : 4
+    code_elements :
+     type_code : 4
+     p_codes :
+      -
+        code : |1+
+         
+         ferme()
+        type : 18
+      -
+        type : 161
+        enabled : false
+ menu :
+  name : _Menu
+  identifier : 0x292573e513b5f221
+  internal_properties : BwAAAAcAAABHivBqFH8xYQq/QELUltmClIuqm9KM3lg0XSaBAQ41WqT06R9JfU0qGK5sHUl8/xHCuvP3y9tLeLLOVaAgM2FjnfwSCRBgXqneLsHogwTYpIXuB1zp2uXtmOXYyGd6i+ek6BBvtJ0ylgF/MxkRihdZ26pl/9Jf5c+sxo07G0ZzHfcLEu9WD07gTSld25EPGWjvi/e5TxaHOZSRE8C5Ig+YdJawYdK89l+x1ofEmw3pfCNLUe3tNoiwg4AbC1jLdufmJ97Xc0JHDAy7gJsHBzEWwcuroqy2By4PJ4c6Wg==
+  options : []
+ languages :
+  - fr-FR
+ popup_menus : []
+ message_bar :
+  internal_properties : BwAAAAcAAADG0006i3ptxMcUE+O5cGvDhb43eRlY9UEE1z/7izK93v/ToMiwACETQQw4eQhZuJRMFa6SBwwT+zSdDbdc5HEkXDob51ldPFNKsP+0MWY=
+ code_elements :
+  type_code : 1
+  p_codes :
+   -
+     code : |1+
+      PROCEDURE MaFenêtre()
+   -
+     type : 180
+     enabled : false
+   -
+     type : 230
+     enabled : false
+ code_parameters :
+  internal_properties : BwAAAAcAAAARaqIs1pWWTrjJkc2sbefp8NGAHSVvdRgpQIePRe9rhkbpERRVEF+Nx8mIqTxrVGdwHX99jtU=
+  original_name : Modele1
+resources :
+ string_res :
+  identifier : 0x13db9b5d00041a27
+  internal_properties : BwAAAAcAAAAZ++HSz2luvwiNhadWl8v3mh2d0Pq0fCIps02kogrcwVHmCg==
+custom_note :
+ internal_properties : BwAAAAcAAAC68/W0/adbG0nFCRhrE42B5HRnbDzVHaz86sSQyxlBk7I=
+rad :
+ internal_properties : BwAAAAcAAABoAN7PLpwJW3EiA7WVZdCA5EwrCA1rvutcDHooMWKe
